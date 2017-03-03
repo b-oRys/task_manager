@@ -15,8 +15,6 @@ public class Task implements Cloneable, Serializable {
     private boolean active;
     private boolean isRepeated;
 
-    //need for javaFX TableView
-    public Task (){ }
 
     public Task (String title, Date time) {
 

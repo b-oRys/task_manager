@@ -6,7 +6,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import model.Task;
 
 import java.util.Date;
@@ -15,28 +14,21 @@ public class TaskOverviewController {
 
     @FXML
     private TableView<Task> taskTable;
-
     @FXML
-    private TableColumn<Task,SimpleStringProperty> dateColumn;
-
+    private TableColumn<Task,String> dateColumn;
     @FXML
-    private TableColumn<Task,SimpleStringProperty> titleColumn;
+    private TableColumn<Task,String> titleColumn;
 
     @FXML
     public Label titleInfoLabel;
-
     @FXML
     public Label timeInfoLabel;
-
     @FXML
     public Label startInfoLabel;
-
     @FXML
     public Label endInfoLabel;
-
     @FXML
     public Label intervalInfoLabel;
-
     @FXML
     public Label statusInfoLabel;
 
@@ -50,32 +42,41 @@ public class TaskOverviewController {
     }
 
     @FXML
-    private void initialiize (){
-        dateColumn.setCellValueFactory(new PropertyValueFactory<Task, SimpleStringProperty>("time"));
-//        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().nextTimeAfter(new Date(0)).toString()));
+    private void initialize (){
 
-        //titleColumn.setCellValueFactory();
-        titleColumn.setCellValueFactory(new PropertyValueFactory<Task, SimpleStringProperty>("title"));
+        dateColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(
+                        cellData.getValue().nextTimeAfter(new Date(0)).toString() + "\n"
+                )
+        );
 
-//        taskTable.setItems(mainApp.getTaskData());
+
+        titleColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(
+                        cellData.getValue().getTitle()
+                )
+        );
 
         showTaskDetails(null);
 
-        taskTable.getSelectionModel().selectedIndexProperty().addListener(
-                (observable, oldValue, newValue)-> showTaskDetails(newValue));
+        taskTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showTaskDetails(newValue));
 
     }
 
     public void setMainApp (Main mainApp) {
         this.mainApp = mainApp;
         taskTable.setItems(mainApp.getTaskData());
-
     }
 
+    @FXML
     public void addTask(){
-        mainApp.getTaskData().add(new Task("runing", new Date(567896)));
+        Task task = new Task("runing", new Date(567896));
+        task.setActive(true);
+        mainApp.getTaskData().add(task);
     }
 
+    @FXML
     private void showTaskDetails(Task task){
         if (task != null){
 

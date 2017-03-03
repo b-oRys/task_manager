@@ -24,10 +24,17 @@ public class Main extends Application {
 
 
     public Main (){
-        taskData = FXCollections.observableArrayList();
-        taskData.add(new Task("house work", new Date(44444)));
-        taskData.add(new Task("program", new Date(55555)));
-        taskData.add(new Task("walk", new Date(234653)));
+
+        Task task0 = new Task("house work", new Date(44444));
+        task0.setActive(true);
+        Task task1 = new Task("program", new Date(55555));
+        task1.setActive(true);
+        Task task2 = new Task("walk", new Date(234653));
+        task2.setActive(true);
+
+        taskData.add(task0);
+        taskData.add(task1);
+        taskData.add(task2);
     }
 
 
@@ -51,6 +58,7 @@ public class Main extends Application {
 
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
+
 
             TaskOverviewController controller = loader.getController();
             controller.setMainApp(this);
