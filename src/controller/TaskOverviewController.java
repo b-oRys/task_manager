@@ -2,12 +2,17 @@ package controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import model.Task;
 
+import java.io.IOException;
 import java.util.Date;
 
 public class TaskOverviewController {
@@ -100,6 +105,27 @@ public class TaskOverviewController {
             timeInfoLabel.setText("");
         }
 
+    }
+
+    @FXML
+    public void showEditIntervalScene(){
+        Stage primaryStage = mainApp.getPrimaryStage();
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../view/fxml/editingIntervalScene.fxml"));
+            Parent root = loader.load();
+
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+
+
+            EditingIntervalSceneController controller = loader.getController();
+            controller.setMainApp(mainApp);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
