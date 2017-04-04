@@ -22,8 +22,16 @@ public class Main extends Application {
     private BorderPane rootLayaout;
     private ObservableList<Task> taskData = FXCollections.observableArrayList();
 
+    private Parent rootForTaskOverview;
+    private TaskOverviewController taskOverviewController;
+    private Parent rootForEditingTask;
+    private EditingTaskSceneController editingTaskController;
+    private Parent rootForEditingInterval;
+    private EditingIntervalSceneController editingIntervalController;
 
     public Main (){
+
+
 
         Task task0 = new Task("house work", new Date(44444));
         task0.setActive(true);
@@ -52,13 +60,13 @@ public class Main extends Application {
 
         // showPersonOverview
         try {
+            prepareEditIntervalScene();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("../view/fxml/listScene.fxml"));
             Parent root = loader.load();
 
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
-
 
             TaskOverviewController controller = loader.getController();
             controller.setMainApp(this);
@@ -77,8 +85,31 @@ public class Main extends Application {
         return taskData;
     }
 
+
+
     public static void main(String[] args) {
         launch(args);
 
+    }
+
+    public void prepareEditIntervalScene () {
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("../view/fxml/editingIntervalScene.fxml"));
+
+        try {
+            rootForEditingInterval = loader.load();
+            editingIntervalController = loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Parent getRootForEditingInterval() {
+        return rootForEditingInterval;
+    }
+
+    public EditingIntervalSceneController getEditingIntervalController() {
+        return editingIntervalController;
     }
 }

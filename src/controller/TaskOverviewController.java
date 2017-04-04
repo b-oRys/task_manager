@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -42,6 +41,8 @@ public class TaskOverviewController {
 
     private Main mainApp;
 
+    private Task selectedTask;
+
     public TaskOverviewController (){
 
     }
@@ -76,6 +77,46 @@ public class TaskOverviewController {
 
     @FXML
     public void addTask(){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("../view/fxml/editingTaskScene.fxml"));
+
+        try {
+
+            Parent rootEditTaskScene = loader.load();
+
+            mainApp.getPrimaryStage().getScene().setRoot(rootEditTaskScene);
+
+            EditingTaskSceneController controller = loader.getController();
+            controller.setMainApp(mainApp);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Task task = new Task("runing", new Date(567896));
+        task.setActive(true);
+        mainApp.getTaskData().add(task);
+
+    }
+
+    @FXML
+    public void showEditTaskScene(){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("../view/fxml/editingTaskScene.fxml"));
+
+        try {
+
+            Parent rootEditTaskScene = loader.load();
+
+            mainApp.getPrimaryStage().getScene().setRoot(rootEditTaskScene);
+
+            EditingTaskSceneController controller = loader.getController();
+            controller.setMainApp(mainApp);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Task task = new Task("runing", new Date(567896));
         task.setActive(true);
         mainApp.getTaskData().add(task);
@@ -83,6 +124,7 @@ public class TaskOverviewController {
 
     @FXML
     private void showTaskDetails(Task task){
+        selectedTask = task;
         if (task != null){
 
             titleInfoLabel.setText(task.getTitle());
@@ -110,22 +152,13 @@ public class TaskOverviewController {
     @FXML
     public void showEditIntervalScene(){
         Stage primaryStage = mainApp.getPrimaryStage();
+        Parent root = mainApp.getRootForEditingInterval();
 
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("../view/fxml/editingIntervalScene.fxml"));
-            Parent root = loader.load();
+        primaryStage.getScene().setRoot(root);
+//        primaryStage.show();
 
-            primaryStage.setScene(new Scene(root));
-            primaryStage.show();
-
-
-            EditingIntervalSceneController controller = loader.getController();
-            controller.setMainApp(mainApp);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        EditingIntervalSceneController controller = mainApp.getEditingIntervalController();
+        controller.setMainApp(mainApp);
     }
 
 
